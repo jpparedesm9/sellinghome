@@ -1,28 +1,87 @@
-Documentación de sistema de bienes raíces
+Sistema de Bienes Raíces
+
+========================
+
 Introducción
-Este sistema está diseñado para brindar una plataforma completa para la compra y venta de bienes raíces. Incluye un sistema de autenticación seguro para asegurar la privacidad y seguridad de los usuarios.
 
-Autenticación
-Para garantizar la seguridad de la información de los usuarios, se ha implementado un sistema de autenticación mediante el uso de tokens JWT.
+------------
 
-Rutas
-POST /api/auth/register: permite al usuario registrarse en el sistema proporcionando su nombre de usuario, correo electrónico y contraseña.
-POST /api/auth/login: permite al usuario iniciar sesión en el sistema proporcionando su nombre de usuario y contraseña.
-POST /api/auth/logout: permite al usuario cerrar sesión en el sistema invalidando su token actual.
-POST /api/auth/token/refresh: permite al usuario actualizar su token actual antes de que expire.
-Inmuebles
-Rutas
-GET /api/properties: Devuelve una lista de todos los inmuebles disponibles en el sistema
-GET /api/properties/:id: Devuelve la información detallada de un inmueble específico
-POST /api/properties: Permite a un usuario autenticado crear un nuevo inmueble
-PUT /api/properties/:id: Permite a un usuario autenticado editar un inmueble existente
-DELETE /api/properties/:id: Permite a un usuario autenticado eliminar un inmueble existente
-Reservas
-Rutas
-GET /api/bookings: Devuelve una lista de todas las reservas realizadas por un usuario autenticado
-POST /api/bookings: Permite a un usuario autenticado realizar una reserva en un inmueble específico
-DELETE /api/bookings/:id: Permite a un usuario autenticado cancelar una reserva existente
-Usuarios
-Rutas
-GET /api/users/:id: Devuelve la información del perfil de un usuario específico
-PUT /api/users/:id: Permite a un usuario autenticado editar su perfil
+Este sistema contempla todo lo necesario para una página de compra y venta de bienes raíces. Incluye una API de autenticación que permite a los usuarios registrarse y acceder a las funcionalidades de la plataforma.
+
+Base de datos
+
+-------------
+
+Para almacenar la información de los usuarios y los bienes raíces, se utiliza una base de datos PostgreSQL.
+
+sqlCopy code
+
+`// Código para la creación de la tabla de usuarios
+
+CREATE TABLE users (
+
+    id SERIAL PRIMARY KEY,
+
+    email VARCHAR(255) NOT NULL,
+
+    password VARCHAR(255) NOT NULL,
+
+    role VARCHAR(255) NOT NULL
+
+);`
+
+sqlCopy code
+
+`// Código para la creación de la tabla de propiedades
+
+CREATE TABLE properties (
+
+    id SERIAL PRIMARY KEY,
+
+    title VARCHAR(255) NOT NULL,
+
+    description TEXT NOT NULL,
+
+    price INTEGER NOT NULL,
+
+    user_id INTEGER NOT NULL REFERENCES users(id)
+
+);`
+
+API de autenticación
+
+--------------------
+
+La API de autenticación utiliza el middleware de autenticación Passport para validar las credenciales de los usuarios.
+
+javascriptCopy code
+
+`// Código para la ruta de registro
+
+router.post('/register', (req, res) => {
+
+    User.register(new User({ email: req.body.email, role: req.body.role }), req.body.password, (err, user) => {
+
+        if (err) {
+
+            return res.status(500).json({
+
+                error: err
+
+            });
+
+        }
+
+        passport.authenticate('local')(req, res, () => {
+
+            return res.status(200).json({
+
+                status: 'Registro exitoso!'
+
+            });
+
+        });
+
+    });
+
+});`

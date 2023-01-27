@@ -1,45 +1,28 @@
-# Express API Starter
+Documentación de sistema de bienes raíces
+Introducción
+Este sistema está diseñado para brindar una plataforma completa para la compra y venta de bienes raíces. Incluye un sistema de autenticación seguro para asegurar la privacidad y seguridad de los usuarios.
 
-Includes API Server utilities:
+Autenticación
+Para garantizar la seguridad de la información de los usuarios, se ha implementado un sistema de autenticación mediante el uso de tokens JWT.
 
-* [morgan](https://www.npmjs.com/package/morgan)
-  * HTTP request logger middleware for node.js
-* [helmet](https://www.npmjs.com/package/helmet)
-  * Helmet helps you secure your Express apps by setting various HTTP headers. It's not a silver bullet, but it can help!
-* [dotenv](https://www.npmjs.com/package/dotenv)
-  * Dotenv is a zero-dependency module that loads environment variables from a `.env` file into `process.env`
-
-Development utilities:
-
-* [nodemon](https://www.npmjs.com/package/nodemon)
-  * nodemon is a tool that helps develop node.js based applications by automatically restarting the node application when file changes in the directory are detected.
-* [eslint](https://www.npmjs.com/package/eslint)
-  * ESLint is a tool for identifying and reporting on patterns found in ECMAScript/JavaScript code.
-* [mocha](https://www.npmjs.com/package/mocha)
-  * ☕️ Simple, flexible, fun JavaScript test framework for Node.js & The Browser ☕️
-* [supertest](https://www.npmjs.com/package/supertest)
-  * HTTP assertions made easy via superagent.
-
-## Setup
-
-```
-npm install
-```
-
-## Lint
-
-```
-npm run lint
-```
-
-## Test
-
-```
-npm run test
-```
-
-## Development
-
-```
-npm run dev
-```
+Rutas
+POST /api/auth/register: permite al usuario registrarse en el sistema proporcionando su nombre de usuario, correo electrónico y contraseña.
+POST /api/auth/login: permite al usuario iniciar sesión en el sistema proporcionando su nombre de usuario y contraseña.
+POST /api/auth/logout: permite al usuario cerrar sesión en el sistema invalidando su token actual.
+POST /api/auth/token/refresh: permite al usuario actualizar su token actual antes de que expire.
+Inmuebles
+Rutas
+GET /api/properties: Devuelve una lista de todos los inmuebles disponibles en el sistema
+GET /api/properties/:id: Devuelve la información detallada de un inmueble específico
+POST /api/properties: Permite a un usuario autenticado crear un nuevo inmueble
+PUT /api/properties/:id: Permite a un usuario autenticado editar un inmueble existente
+DELETE /api/properties/:id: Permite a un usuario autenticado eliminar un inmueble existente
+Reservas
+Rutas
+GET /api/bookings: Devuelve una lista de todas las reservas realizadas por un usuario autenticado
+POST /api/bookings: Permite a un usuario autenticado realizar una reserva en un inmueble específico
+DELETE /api/bookings/:id: Permite a un usuario autenticado cancelar una reserva existente
+Usuarios
+Rutas
+GET /api/users/:id: Devuelve la información del perfil de un usuario específico
+PUT /api/users/:id: Permite a un usuario autenticado editar su perfil
